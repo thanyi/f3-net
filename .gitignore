@@ -3,4 +3,4 @@
 __pycache__
 train_logs/
 models/xception-b5690688.pth
-utils/f3net_conf.py
+
