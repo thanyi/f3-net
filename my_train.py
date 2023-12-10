@@ -61,10 +61,10 @@ def f3net_training(iftrained=False):
     device = config.device
 
     # 载入dataset和loader
-    bz = 4
-    train_data = DeepfakeDataset(normal_root=config.dfdc_real_root, malicious_root=config.dfdc_syn_root, mode='train',
+    bz = 8
+    train_data = DeepfakeDataset(normal_root=config.ff_df_real_root, malicious_root=config.ff_df_syn_root, mode='train',
                                  resize=380,
-                                 csv_root=config.dfdc_csv_root)
+                                 csv_root=config.ff_df_csv_root)
     train_data_size = len(train_data)
     print('train_data_size:', train_data_size)
     train_loader = DataLoader(train_data, bz, shuffle=True)
@@ -157,15 +157,19 @@ def f3net_training(iftrained=False):
             with open(f"/hy-nas/model/result.txt", "a+") as f:
                 f.write(f"this is the {epoch}'s epoch\n")
 
-            r_acc, auc, con_mat = evaluate(model, config.ff_real_root, config.ff_syn_root,config.ff_csv_root, "test",loss_mode=model_loss)
-            record(r_acc, auc, con_mat ,epoch, data_name='ff_test')
+            r_acc, auc, con_mat = evaluate(model, config.ff_df_real_root, config.ff_df_syn_root,config.ff_df_csv_root, "test",loss_mode=model_loss)
+            record(r_acc, auc, con_mat ,epoch, data_name='ff-df')
 
-            r_acc, auc ,con_mat= evaluate(model, config.celeb_real_root, config.celeb_syn_root, config.celeb_csv_root, "test",loss_mode=model_loss)
-            record(r_acc, auc ,con_mat,epoch, data_name='celeb_test')
+            r_acc, auc ,con_mat= evaluate(model, config.ff_f2f_real_root, config.ff_f2f_syn_root, config.ff_f2f_csv_root, "test",loss_mode=model_loss)
+            record(r_acc, auc ,con_mat,epoch, data_name='ff-f2f')
 
 
-            r_acc, auc ,con_mat = evaluate(model, config.dfdc_root, config.dfdc_syn_root, config.dfdc_csv_root, "test",loss_mode=model_loss)
-            record(r_acc, auc, con_mat,  epoch, data_name='dfdc_test')
+            r_acc, auc ,con_mat = evaluate(model, config.ff_fs_real_root, config.ff_fs_syn_root, config.ff_fs_csv_root, "test",loss_mode=model_loss)
+            record(r_acc, auc, con_mat,  epoch, data_name='ff-fs')
+
+            r_acc, auc ,con_mat = evaluate(model, config.ff_nt_real_root, config.ff_nt_syn_root, config.ff_nt_csv_root, "test",loss_mode=model_loss)
+            record(r_acc, auc, con_mat,  epoch, data_name='ff-nt')
+            
             model.train()
 
         scheduler.step()
