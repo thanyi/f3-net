@@ -97,6 +97,16 @@ def f3net_training(iftrained=False):
     for param in model.eff.fc.parameters():
         param.requires_grad = True
 
+    # 解冻前几层
+    for name, param in model.named_parameters():
+        if 'conv_stem' in name or 'bn1' in name or name.startswith('blocks.0') or name.startswith('blocks.1'):
+            param.requires_grad = True
+
+    # 解冻后三层
+    for name, param in model.named_parameters():
+        if name.startswith('blocks.6') or 'conv_head' in name or 'classifier' in name:
+            param.requires_grad = True
+
     # 初始化loss函数
     if model_loss =='logits':
         loss_fn = nn.BCEWithLogitsLoss().to(device)
