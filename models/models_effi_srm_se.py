@@ -173,7 +173,7 @@ class F3Net(nn.Module):
         self.fad_channel = 12
         self.srm_channel = 90
         self.se = SEblock(self.srm_channel)
-
+        self.se2 = SEblock(self.srm_channel+self.fad_channel)
 
 
         if mode == 'Both':
@@ -239,7 +239,7 @@ class F3Net(nn.Module):
             fea_SRM = self.se(fea_SRM)
             y = torch.cat((fea_FAD, fea_SRM), dim=1)
 
-            y = self.se(y)
+            y = self.se2(y)
             y = self.eff(y)
             y = self._norm_fea(y)
 
@@ -310,17 +310,18 @@ def get_eff_state_dict(pretrained_path=config.efficient_pretrained_path):
 if __name__ == '__main__':
 
 
-    # tf = transforms.Compose([
-    #     lambda x: Image.open(x).convert("RGB"),  # string path => image data
-    #     # transforms.Resize(380),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize(mean=[0.485, 0.456, 0.406],
-    #                          std=[0.229, 0.224, 0.225])
-    # ])
-    # path = r"C:\Users\ethanyi\AppData\Roaming\JetBrains\PyCharm2021.1\scratches\1.png"
-    # img = tf (path)
-    # img = img.unsqueeze(0)
-    # print(img.shape)
+    tf = transforms.Compose([
+        lambda x: Image.open(x).convert("RGB"),  # string path => image data
+        # transforms.Resize(380),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+    ])
+    path = r"/hy-tmp/FF_df/FF_df/000_003/10.png"
+    img = tf (path)
+    print(img.shape)
+    img = img.unsqueeze(0)
+    print(img.shape)
     # srm = HPF_SRM()
     # out  = srm(img)
     # print(out.shape)
@@ -330,6 +331,7 @@ if __name__ == '__main__':
 
 
 
-    net = EffNet()
-    # out = net(img)
+    net = F3Net()
     print(net)
+    out = net(img)
+    print(out.shape)
