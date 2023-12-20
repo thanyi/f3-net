@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import auc as cal_auc
 from dataset.dataset import DeepfakeDataset
-from models.models_effi_srm import *
+from models.models_vit import *
 from utils.utils import evaluate
 import utils.f3net_conf as config
 
@@ -72,7 +72,7 @@ def f3net_training(iftrained=False):
     # 初始化model
     model_name = input("请输入model_name: ")
     model_loss = input("请输入model_loss(logits or AM  or Focal): ")
-    model = F3Net(mode="Both",loss_mode = model_loss)
+    model = CViT()
 
     if iftrained == True:
         model_to_load = input("载入的模型为：")

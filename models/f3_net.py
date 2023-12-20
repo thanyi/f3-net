@@ -1,4 +1,4 @@
-from models.xception import Xception
+from f3_net.xception import Xception
 import utils.f3net_conf as config
 import torch
 import torch.nn as nn
