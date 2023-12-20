@@ -17,7 +17,7 @@ import types
 import timm.models.efficientnet as effnet
 from cvit import *
 
-SRM_npy = np.load(r'E:\Desktop\DF_detection\f3-net\models\SRM_Kernels.npy')
+SRM_npy = np.load(r'/hy-nas/f3-net/models/SRM_Kernels.npy')
 
 
 class SEblock(nn.Module):
@@ -335,7 +335,7 @@ def norm_sigma(x):
     return 2. * torch.sigmoid(x) - 1.
 
 
-def get_eff_state_dict(pretrained_path='E:\Desktop\DF_detection\deepware.pt'):
+def get_eff_state_dict(pretrained_path=config.efficient_pretrained_path):
     '''
     这个函数进行
         预训练模型加载
